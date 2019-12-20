@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests
 from .database import DB
 
@@ -12,20 +12,42 @@ def test_app():
     # define home page
     @app.route('/', methods=['POST','GET'])
     def home():
-        return render_template('home.html', title="first app!!", picture=images())
+        return render_template('home.html', title="first app!!", picture=images(), breeds = list_breed())
 
     # function to get random cat images
     def images():
         image = requests.get('https://api.thecatapi.com/v1/images/search')
         cats = image.json()[0]['url']
-        # add something to be able to display the breed of the cat and it's id
         return cats
-        # add a button to generate random images
+
+    #list of cat breeds put in a dictionary
+    def list_breed():
+        breed_list = requests.get('https://api.thecatapi.com/v1/breeds')
+        breeds = {}
+        for breed_type in breed_list.json():
+            breeds[breed_type['id']] = breed_type['name']
+
+        return breeds
+
+    # calling the API to search for cats by breed
+    def search_cat(cat = ''):
+        search = requests.get(f"https://api.thecatapi.com/v1/images/search?breed_ids={cat}")
+        result = search.json()[0]['url']
+        return result
 
     # a function to search for cats by breed
-    @app.route('/breed')
+    # https://api.thecatapi.com/v1/images/search?breed_ids={cat}
+    # https://api.thecatapi.com/v1/breeds/search?
+
+    # page where submit(cats by category) button in home.html lands with the image of a new cat
+    @app.route('/breed', methods=['POST'])
     def breed():
-        pass
+        cat = request.values['category'] # get the values from the dictionary in home.html
+        image = search_cat(cat) # call the search cat function and pass in the id(values) as the parameter
+        breeds = list_breed() # just call the list_breed function
+        breed = breeds[cat] # call the id(key) from the list_breed() dictionary which returns the value associated with it as the name of  the cat displayed on the screen.
+        return render_template('home.html', title="first app!!", picture=image, breeds = breeds, breed=breed)
+
 
     # a function to search for cats by category
     @app.route('/category')

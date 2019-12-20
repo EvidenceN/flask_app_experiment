@@ -5,24 +5,23 @@
     <title>{{title}}</title>
 </head>
 <body>
-    <img src = {{picture}} height="200" width="200">
-    <p>Building my first web app</p>
-    <!--button to click for new image-->
-    <form action="/" >
-        <button type='submit' style="background-color: crimson;">New CAT Please</button>
-    </form>
-    
-    <!--Drop down menu to searching. Displays the name of the breed but under the name of the breed is the id of the breed as value-->
+    <!--list of cats in ordered list
+    {% for breed in breeds %}
+    <ul>
+        <li>{{breed}}</li>
+    </ul>
+    {% endfor %}
+    -->
+
     <form action="/breed", method="POST">
         <select name='category'>
             {% for id, breed in breeds.items() %}
             <option value="{{id}}">{{breed}}</option>
             {% endfor %}
         </select>
-        
+
         <button type="submit" style="background-color: darkmagenta;">Search by breed</button>
     </form>
 
-    <p> This cat is a {{breed}}</p>
 </body>
 </html>

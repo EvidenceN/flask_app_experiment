@@ -1,3 +1,9 @@
+<!--The exact same thing with home.hmtl but 
+this line was removed 
+<p> This cat is a {{breed}}</p>
+because the function def saved_cats doesn't
+know what breed it, so it will be difficult to use home.html. This will used with saved_cats
+function instead of home.html-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,12 +31,11 @@
         <button type="submit" style="background-color: darkmagenta;">Search by breed</button>
     </form>
 
-    <p> This cat is a {{breed}}</p>
-
     <!--Form for saving Saving  cat files-->
     <form action="/saved-cats", method="POST" name="CAT_URL">
         <button type="submit" style="background-color: rgb(8, 226, 230);" value="{{picture}}">Save Cat Pics
         </button>
+
     </form>
         
     <!--

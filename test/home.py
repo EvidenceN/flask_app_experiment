@@ -9,6 +9,9 @@ def test_app():
     # Setting up/configuring database
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///db.sqlite3"
 
+    # stop tracking modifications on sqlalchemy config
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
     # how the database knows about the app
     DB.init_app(app)
 
@@ -51,6 +54,9 @@ def test_app():
         breed = breeds[cat] # call the id(key) from the list_breed() dictionary which returns the value associated with it as the name of  the cat displayed on the screen.
         return render_template('home.html', title="first app!!", picture=image, breeds = breeds, breed=breed)
 
+    # stop tracking modifications on sqlalchemy config
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
     @app.route('/reset')
     def reset():
         DB.drop_all()
@@ -58,21 +64,24 @@ def test_app():
         return 'Database has been reset'
 
     # function for saving cat pictures into a database
-    @app.route('/saved_cats')
+    @app.route('/saved-cats', methods = ["POST"])
     def saved_cats():
         name_id = request.values['category'] #get the breed id of the cat
-        breeds = list_breed() #dictionary with bree names
+        breeds = list_breed() #dictionary with breed names
         name = breeds[name_id] # get the breed(value) of the cat from the name_id(key)
-        link = request.values['CAT_URL'] #get the value from this name which is defined in home.htl
+        link = request.values['CAT_URL'] #get the value from this name which is defined in home.html
+        liked_cats = fav_cats(link=link, breed=name, breed_id=name_id)
 
-        DB.session.add(fav_cats(link=link, breed=name, breed_id=name_id))
+        DB.session.add(liked_cats)
+
         DB.session.commit()
-        return render_template('home.html', title="first app!!", picture=images(), breeds = breeds, breed=breed)
+
+        return render_template('home.html', title="first app!!", picture=images(), breeds = list_breed())
 
     @app.route('/favorites')
     def favorites():
-        faves = fav_cats.query.with_entites(link)
-        return render_template("cat_faves.html", faves=faves. title='favorite cats')
+        faves = fav_cats.query.with_entites(fav_cats.link)
+        return render_template("cat_faves.html", faves=faves, title='favorite cats')
 
 
     # a function to search for cats by category

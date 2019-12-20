@@ -64,7 +64,7 @@ def test_app():
         return 'Database has been reset'
 
     # function for saving cat pictures into a database
-    @app.route('/saved-cats', methods = ["POST"])
+    @app.route('/saved-cats', methods = ["POST", 'GET'])
     def saved_cats():
         name_id = request.values['category'] #get the breed id of the cat
         breeds = list_breed() #dictionary with breed names

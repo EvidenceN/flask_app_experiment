@@ -5,13 +5,15 @@
     <title>{{title}}</title>
 </head>
 <body>
-    <img src = {{picture}} height="200" width="200">
     <p>Building my first web app</p>
+
+    <img src = {{picture}} height="200" width="200">
+  
     <!--button to click for new image-->
     <form action="/" >
         <button type='submit' style="background-color: crimson;">New CAT Please</button>
     </form>
-    
+
     <!--Drop down menu to searching. Displays the name of the breed but under the name of the breed is the id of the breed as value-->
     <form action="/breed", method="POST">
         <select name='category'>
@@ -21,6 +23,13 @@
         </select>
         
         <button type="submit" style="background-color: darkmagenta;">Search by breed</button>
+    </form>
+
+    <!--Form for saving Saving  cat files-->
+    <form action="/saved_cats", method="POST">
+
+        <button name="CAT_URL" type="submit" style="background-color: darkturquoise;" value="{{picture}}">Save Cat Pics</button>
+
     </form>
 
     <p> This cat is a {{breed}}</p>

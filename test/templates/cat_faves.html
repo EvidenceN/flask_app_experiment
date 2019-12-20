@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+</head>
+<body>
+<!--Loop through list of saved cats and display the pictures one by one-->
+        {%for cat in faves%}
+        <ul>
+            <li>
+                <img src = '{{cat[0]}}' alt='cuttest cats' height="200" width="200">
+            </li>
+        </ul>
+        {% endfor %}
+
+</body>
+</html>
